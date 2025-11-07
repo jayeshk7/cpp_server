@@ -1,0 +1,15 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-I/usr/include/postgresql",
+      "-o",
+      "server",
+      "server.cpp"
+    ],
+    "directory": "/home/jayeshk/Desktop/IITB Coursework/Sem 1/DECS/project",
+    "file": "/home/jayeshk/Desktop/IITB Coursework/Sem 1/DECS/project/server.cpp",
+    "output": "/home/jayeshk/Desktop/IITB Coursework/Sem 1/DECS/project/server"
+  }
+]
