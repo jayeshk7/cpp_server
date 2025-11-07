@@ -5,11 +5,24 @@
       "-c",
       "-I/usr/include/postgresql",
       "-o",
-      "server",
-      "server.cpp"
+      "build/server",
+      "src/server.cpp"
     ],
-    "directory": "/home/jayeshk/Desktop/IITB Coursework/Sem 1/DECS/project",
-    "file": "/home/jayeshk/Desktop/IITB Coursework/Sem 1/DECS/project/server.cpp",
-    "output": "/home/jayeshk/Desktop/IITB Coursework/Sem 1/DECS/project/server"
+    "directory": "/home/jayeshk/Desktop/cpp_server",
+    "file": "/home/jayeshk/Desktop/cpp_server/src/server.cpp",
+    "output": "/home/jayeshk/Desktop/cpp_server/build/server"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-I/usr/include/postgresql",
+      "-o",
+      "build/server",
+      "src/DB.cpp"
+    ],
+    "directory": "/home/jayeshk/Desktop/cpp_server",
+    "file": "/home/jayeshk/Desktop/cpp_server/src/DB.cpp",
+    "output": "/home/jayeshk/Desktop/cpp_server/build/server"
   }
 ]
