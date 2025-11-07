@@ -223,11 +223,3 @@ int main() {
   svr.listen("127.0.0.1", 8080);
 }
 
-// TODO
-// 1. Add access logging (to measure request service time) and error logging
-// 2. Add error handler and exception handler 
-// 3. Experiment with different threadpool size (default = 8) and max_queued_requests. you can take it as user input
-// 4. study RAII. using mutex.lock()/unlock() can fail if the code within the lock throws an exception. then the lock will never be yielded => deadlock
-
-
-// each api opening a new connection to DB is slow. for each thing you will have to do tcp + auth. so connection pooling is better. number of connections can be == number of threads in my design. experiment with pooling size.
