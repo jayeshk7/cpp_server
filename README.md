@@ -44,9 +44,10 @@ Even `accept()` can be made non blocking. This can be done by doing `epoll_wait(
 
 ### TODO
 
+- [ ] Each api opening a new connection to DB is slow. for each conn, you will have to do tcp + auth. Implement connection pooling.
+- [x] Look up RAII. Using mutex.lock()/unlock() can fail if the code within the lock throws an exception leading to lock never getting released => deadlock.
+- [ ] Implement reader writer lock.
 - [ ] Add proper access logging (to measure request service time) and error logging in server. Also add error handler and exception handler.
 - [ ] Experiment with different threadpool sizes for server (default = 8) and max_queued_requests. Can take as user input.
-- [ ] Look up RAII. Using mutex.lock()/unlock() can fail if the code within the lock throws an exception leading to lock never getting released => deadlock.
-- [ ] Each api opening a new connection to DB is slow. for each conn, you will have to do tcp + auth. Implement connection pooling.
-
+- [ ] Add a /metrics API which returns all the required metrics after a load test is completed.
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
-#include <vector>
+#include <deque>
 #include <mutex>
 #include <string>
 #include <atomic>
@@ -14,8 +14,9 @@ using namespace httplib;
 
 Server svr;
 std::unordered_map<std::string, std::string> kv_cache;
-std::vector<std::string> fifo_queue;
-std::mutex cache_mutex, DB_mutex;
+std::deque<std::string> fifo_queue;
+std::mutex cache_mutex;
+// , DB_mutex;
 std::atomic<int> cache_hits = 0;
 
 void hihandler(const Request &req, Response &res) {
@@ -28,52 +29,56 @@ void readHandler(const Request &req, Response &res) {
   std::string key = req.path_params.at("key");
   // printf("printing key in readhandler = %s", key.c_str());
 
-  cache_mutex.lock();
-  auto iter = kv_cache.find(key);
-  
-  if(iter != kv_cache.end()) {
-    // CACHE HIT
-    cache_hits += 1;
-    if(cache_hits % 100000 == 0)
-      std::cout << "DEBUG >> cache hits " << cache_hits << std::endl;
+  // cache_mutex.lock();
+  {
+    std::lock_guard<std::mutex> lock(cache_mutex);
+    auto iter = kv_cache.find(key);
 
-    res.set_content(iter->second, "text/plain");
-    res.status = StatusCode::OK_200;
-    cache_mutex.unlock();
-    return;
+    if(iter != kv_cache.end()) {
+      // CACHE HIT
+      cache_hits.fetch_add(1, std::memory_order_relaxed);
+      if(cache_hits.load() % 100000 == 0)
+        std::cout << "DEBUG >> cache hits " << cache_hits << std::endl;
+
+      res.set_content(iter->second, "text/plain");
+      res.status = StatusCode::OK_200;
+      // cache_mutex.unlock();
+      return;
+    }
+  }
+  
+  // CACHE MISS
+  PGconn *conn = connectDB();
+
+  const char *query = "select key,value from mytable where key = $1";
+  const char *params[] = {key.c_str()};
+
+  PGresult *data = PQexecParams(conn, query, 1, NULL, params, NULL, NULL, 0);
+
+  ExecStatusType response_status = PQresultStatus(data);
+
+  if (response_status != PGRES_TUPLES_OK) {
+
+    std::cout << "Error while executing the query: " << PQerrorMessage(conn) << std::endl;
+
+    res.set_content(PQerrorMessage(conn), "text/plain");
+    res.status = StatusCode::InternalServerError_500;
   }
   else {
-    // CACHE MISS
-    cache_mutex.unlock();
-    PGconn *conn = connectDB();
 
-    const char *query = "select key,value from mytable where key = $1";
-    const char *params[] = {key.c_str()};
+    int rows = PQntuples(data);
 
-    PGresult *data = PQexecParams(conn, query, 1, NULL, params, NULL, NULL, 0);
-
-    ExecStatusType response_status = PQresultStatus(data);
-
-    if (response_status != PGRES_TUPLES_OK) {
-
-      std::cout << "Error while executing the query: " << PQerrorMessage(conn) << std::endl;
-
-      res.set_content(PQerrorMessage(conn), "text/plain");
-      res.status = StatusCode::InternalServerError_500;
+    if(rows == 0) {
+      res.set_content("This key does not exist. Please create first.", "text/plain");
+      res.status = StatusCode::NotFound_404;
     }
     else {
+      // we will not have >1 value for a key so no need for a loop to fetch query result
+      std::string response_value = PQgetvalue(data, 0, 1); // col 1
 
-      int rows = PQntuples(data);
-
-      if(rows == 0) {
-        res.set_content("This key does not exist. Please create first.", "text/plain");
-        res.status = StatusCode::NotFound_404;
-      }
-      else {
-        // we will not have >1 value for a key so no need for a loop to fetch query result
-        std::string response_value = PQgetvalue(data, 0, 1); // col 1
-
-        cache_mutex.lock();
+      // cache_mutex.lock();
+      {
+        std::lock_guard<std::mutex> lock(cache_mutex);
         if(kv_cache.size() < 500) {
           kv_cache[key] = response_value;
           fifo_queue.push_back(key);
@@ -82,24 +87,24 @@ void readHandler(const Request &req, Response &res) {
           // using fcfs to find which key to evict
           // experiment with lru next
           std::string key_to_evict = fifo_queue.front();
-          
+
           kv_cache.erase(key_to_evict);
-          fifo_queue.erase(fifo_queue.begin());
+          fifo_queue.pop_front();
 
           kv_cache[key] = response_value;
           fifo_queue.push_back(key);
         }
-        cache_mutex.unlock();
-
-        // std::cout << response_value << std::endl;
-        res.set_content(response_value, "text/plain");
-        res.status = StatusCode::OK_200;
       }
-    }
+      // cache_mutex.unlock();
 
-    PQclear(data);
-    PQfinish(conn);
+      // std::cout << response_value << std::endl;
+      res.set_content(response_value, "text/plain");
+      res.status = StatusCode::OK_200;
+    }
   }
+
+  PQclear(data);
+  PQfinish(conn);
 }
 
 void createHandler(const Request &req, Response &res) {
@@ -136,32 +141,35 @@ void createHandler(const Request &req, Response &res) {
     res.set_content("Added to DB and cache", "text/plain");
     res.status = StatusCode::Created_201;
 
-    cache_mutex.lock();
+    // cache_mutex.lock();
+    {
+      std::lock_guard<std::mutex> lock(cache_mutex);
 
-    auto queue_iter = std::find(fifo_queue.begin(), fifo_queue.end(), key);
-    bool key_in_queue = queue_iter != fifo_queue.end() ? true : false;
-    bool key_in_cache = kv_cache.find(key) != kv_cache.end() ? true : false;
+      auto queue_iter = std::find(fifo_queue.begin(), fifo_queue.end(), key);
+      bool key_in_queue = queue_iter != fifo_queue.end() ? true : false;
+      bool key_in_cache = kv_cache.find(key) != kv_cache.end() ? true : false;
 
-    if(kv_cache.size() < 500 || key_in_cache) {
-      kv_cache[key] = value;
-      if (!key_in_queue) {
-        fifo_queue.push_back(key);
+      if(kv_cache.size() < 500 || key_in_cache) {
+        kv_cache[key] = value;
+        if (!key_in_queue) {
+          fifo_queue.push_back(key);
+        }
+        else {
+          fifo_queue.erase(queue_iter);
+          fifo_queue.push_back(key);
+        }
       }
       else {
-        fifo_queue.erase(queue_iter);
+        std::string key_to_evict = fifo_queue.front();
+
+        fifo_queue.pop_front();
+        kv_cache.erase(key_to_evict);
+
+        kv_cache[key] = value;
         fifo_queue.push_back(key);
       }
     }
-    else {
-      std::string key_to_evict = fifo_queue.front();
-
-      fifo_queue.erase(fifo_queue.begin());
-      kv_cache.erase(key_to_evict);
-
-      kv_cache[key] = value;
-      fifo_queue.push_back(key);
-    }
-    cache_mutex.unlock();
+    // cache_mutex.unlock();
   }
 
   // DB_mutex.unlock();
@@ -192,17 +200,20 @@ void deleteHandler(const Request &req, Response &res) {
     res.set_content("Key deleted from DB and cache", "text/plain");
     res.status = StatusCode::OK_200;
     
-    cache_mutex.lock();
-    auto cache_iter = kv_cache.find(key);
-    auto queue_iter = std::find(fifo_queue.begin(), fifo_queue.end(), key);
+    // cache_mutex.lock();
+    {
+      std::lock_guard<std::mutex> lock(cache_mutex);
+      auto cache_iter = kv_cache.find(key);
+      auto queue_iter = std::find(fifo_queue.begin(), fifo_queue.end(), key);
 
-    if(cache_iter != kv_cache.end()) {
-      kv_cache.erase(key);
+      if(cache_iter != kv_cache.end()) {
+        kv_cache.erase(key);
+      }
+      if(queue_iter != fifo_queue.end()) {
+        fifo_queue.erase(queue_iter);
+      }
     }
-    if(queue_iter != fifo_queue.end()) {
-      fifo_queue.erase(queue_iter);
-    }
-    cache_mutex.unlock();
+    // cache_mutex.unlock();
   }
 
   // DB_mutex.unlock();
