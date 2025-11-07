@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <atomic>
 #include <chrono>
 #include <thread>
@@ -9,8 +10,8 @@
 
 using namespace httplib;
 
-const int NUM_THREADS = 8;
-const int TEST_DURATION = 120; // seconds
+int NUM_THREADS = 8;
+int TEST_DURATION = 120; // seconds
 
 std::atomic<int> total_success_count(0);
 std::atomic<int> total_error_count(0);
@@ -18,18 +19,13 @@ std::atomic<int> total_error_count(0);
 void worker_thread(std::chrono::steady_clock::time_point global_start) {
 
   Client cli("127.0.0.1", 8080);
-
-  // per-thread RNG (thread-safe) seeded from random_device + thread id
+  cli.set_connection_timeout(10, 0); // 10-second timeout
+                                     
+  // per-thread RNG
   std::random_device rd;
-  // mix with thread id and time to reduce correlation
-  auto seed = static_cast<unsigned long>(rd()) ^ 
-    std::hash<std::thread::id>{}(std::this_thread::get_id()) ^
-    static_cast<unsigned long>(std::chrono::steady_clock::now().time_since_epoch().count());
-  std::mt19937 rng(seed);
+  std::mt19937 rng(rd());
 
-  const std::string keys[] = {
-    "yo","yo2","yo3","yo4","yo5","yo6","yo7","yo8","yo9","yo10"
-  };
+  const std::string keys[] = {"yo","yo2","yo3","yo4","yo5","yo6","yo7","yo8","yo9","yo10"};
   std::uniform_int_distribution<int> dist(0, 9);
 
   while (true) {
@@ -55,7 +51,13 @@ void worker_thread(std::chrono::steady_clock::time_point global_start) {
   }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+
+  if(argc >= 3) {
+    NUM_THREADS = atoi(argv[1]);
+    TEST_DURATION = atoi(argv[2]);
+  }
+
   std::cout << "Starting load test with " << NUM_THREADS
     << " concurrent users for " << TEST_DURATION << " seconds...\n";
 
@@ -74,7 +76,7 @@ int main() {
 
   int successes = total_success_count.load();
   int errors = total_error_count.load();
-  double rps = (duration_sec > 0.0) ? (static_cast<double>(successes) / duration_sec) : 0.0;
+  double rps = (duration_sec > 0.0) ? (successes / duration_sec) : 0.0;
 
   std::cout << "\n--- Test Finished ---\n";
   std::cout << "Total Requests:     " << (successes + errors) << "\n";

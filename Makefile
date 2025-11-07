@@ -1,9 +1,11 @@
 CC=g++
 
-CFLAGS+=-I/usr/include/postgresql -L/usr/lib/x86_64-linux-gnu -lpq -lpthread
+CPPFLAGS+=-I/usr/include/postgresql -L/usr/lib/x86_64-linux-gnu -lpq -lpthread
+
+all: server read_client write_client
 
 server: src/server.cpp
-	$(CC) -o build/server src/server.cpp src/DB.cpp $(CFLAGS) 
+	$(CC) -o build/server src/server.cpp src/DB.cpp $(CPPFLAGS) 
 
 read_client: src/read_client.cpp
 	$(CC) -o build/read_client src/read_client.cpp -lpthread

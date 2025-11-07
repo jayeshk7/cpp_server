@@ -12,7 +12,7 @@ I am using [cpp-httplib](https://github.com/yhirose/cpp-httplib) and as mentione
 
 To compile the server, do:
 `$ make server`
-If this fails, it can happen because the directory where the Postgres headers and libpq are installed in your machine can be different. In that case, get the output of these commands:
+If this fails, it can happen if the directory where the Postgres headers and libpq are installed in your machine are different. In that case, get the output of these commands:
 ```
 $ pg_config --includedir
 Sample output ----> /usr/include/postgresql
@@ -24,6 +24,7 @@ And the path in `CPPFLAGS+= ... -L/<path> ...` in the Makefile with `/usr/lib/x8
 
 Reference - [Official libpq docs](https://www.postgresql.org/docs/current/libpq-build.html)
 
+---
 
 ### Load Testing
 
@@ -31,12 +32,15 @@ There are two types of client request simulation programs:
 * `read_client.cpp` emulates CPU-bound workload by making GET requests for keys which will be present in a kv-cache (which is an `std::unordered_map`)
 * `write_client.cpp` emulated disk-bound workload by making POST requests to insert new keys into the database.
 
+---
 
 ### NOTES
 
 When we do a `read()` or `recv()` syscall - it waits until there is something to read. The CPU does nothing during this time. For non-blocking socket these operations will return immediately and you will have to keep checking (use some polling mechanism to know when there is data to read from this socket).
 
 Even `accept()` can be made non blocking. This can be done by doing `epoll_wait()` on the sockfd to which server is connected to. if that socket is getting some data that means some client is trying to connect. If any other socket is getting data that means it is probably some socket which has already been accepted as a connection (`accept()` returns a new sockfd). So both `read()` and `accept()` are now non blocking.
+
+---
 
 ### TODO
 
