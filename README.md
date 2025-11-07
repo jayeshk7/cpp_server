@@ -19,7 +19,7 @@ Sample output ----> /usr/include/postgresql
 $ pg_config --libdir
 Sample output ----> /usr/lib/x86_64-linux-gnu
 ```
-Assuming you get the sample outputs, you then substitute the path in `CPPFLAGS+=-I/<path> .... ` in the Makefile with `/usr/include/postgresql`. 
+Assuming your output is same as the sample outputs shown above, you then substitute the path in `CPPFLAGS+=-I/<path> .... ` in the Makefile with `/usr/include/postgresql`. 
 And the path in `CPPFLAGS+= ... -L/<path> ...` in the Makefile with `/usr/lib/x86_64-linux-gnu`. Now run `make server` again.
 
 Reference - [Official libpq docs](https://www.postgresql.org/docs/current/libpq-build.html)
@@ -40,9 +40,9 @@ Even `accept()` can be made non blocking. This can be done by doing `epoll_wait(
 
 ### TODO
 
-[ ] Add proper access logging (to measure request service time) and error logging in server. Also add error handler and exception handler.
-[ ] Experiment with different threadpool sizes for server (default = 8) and max_queued_requests. Can take as user input.
-[ ] Look up RAII. Using mutex.lock()/unlock() can fail if the code within the lock throws an exception leading to lock never getting released => deadlock.
-[ ] Each api opening a new connection to DB is slow. for each conn, you will have to do tcp + auth. Implement connection pooling.
+- [ ] Add proper access logging (to measure request service time) and error logging in server. Also add error handler and exception handler.
+- [ ] Experiment with different threadpool sizes for server (default = 8) and max_queued_requests. Can take as user input.
+- [ ] Look up RAII. Using mutex.lock()/unlock() can fail if the code within the lock throws an exception leading to lock never getting released => deadlock.
+- [ ] Each api opening a new connection to DB is slow. for each conn, you will have to do tcp + auth. Implement connection pooling.
 
 
