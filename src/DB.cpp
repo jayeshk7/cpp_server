@@ -5,12 +5,14 @@
 PGconn* connectDB() {
   const char *conninfo = "dbname=postgres user=jayesh_decs password=jayesh@decs host=localhost port=5432";
 
+  // this is synchronous call to connect to the database.
   PGconn *conn = PQconnectdb(conninfo);
 
   if (PQstatus(conn) != CONNECTION_OK) {
     // If not successful, print the error message and finish the connection
     printf("Error while connecting to the database server: %s\n", PQerrorMessage(conn));
 
+    // close the current connection and free the PGconn data structure  
     PQfinish(conn);
     exit(1);
   }

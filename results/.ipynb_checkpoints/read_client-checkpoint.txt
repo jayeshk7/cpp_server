@@ -1,0 +1,91 @@
+Starting load test with 1 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     1020370
+Successful:         1020370
+Errors:             0
+Duration:           300 s
+Throughput (RPS):   3401.23
+Avg Response Time:   0.000455717 ms
+Starting load test with 2 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     1892706
+Successful:         1892706
+Errors:             0
+Duration:           300 s
+Throughput (RPS):   6309.01
+Avg Response Time:   0.000777194 ms
+Starting load test with 3 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     2167694
+Successful:         2167694
+Errors:             0
+Duration:           300 s
+Throughput (RPS):   7225.64
+Avg Response Time:   0.0044808 ms
+Starting load test with 4 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     2613065
+Successful:         2613065
+Errors:             0
+Duration:           300 s
+Throughput (RPS):   8710.21
+Avg Response Time:   0.0127406 ms
+Starting load test with 5 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     2973952
+Successful:         2973952
+Errors:             0
+Duration:           300.001 s
+Throughput (RPS):   9913.15
+Avg Response Time:   0.0255118 ms
+Starting load test with 6 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     3099100
+Successful:         3099100
+Errors:             0
+Duration:           300.001 s
+Throughput (RPS):   10330.3
+Avg Response Time:   0.0377287 ms
+Starting load test with 7 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     3075188
+Successful:         3075188
+Errors:             0
+Duration:           300.767 s
+Throughput (RPS):   10224.5
+Avg Response Time:   0.125637 ms
+Starting load test with 8 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     3106795
+Successful:         3106795
+Errors:             0
+Duration:           300.111 s
+Throughput (RPS):   10352.1
+Avg Response Time:   0.20181 ms
+
+Starting load test with 9 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     3171550
+Successful:         3171550
+Errors:             0
+Duration:           300.895 s
+Throughput (RPS):   10540.4
+Avg Response Time:   0.279695 ms
+Starting load test with 10 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:     3133298
+Successful:         3133298
+Errors:             0
+Duration:           300.618 s
+Throughput (RPS):   10422.8
+Avg Response Time:   0.391805 ms

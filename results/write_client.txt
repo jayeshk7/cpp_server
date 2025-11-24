@@ -1,0 +1,118 @@
+Starting 'create' load test with 2 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      11345
+Successful Inserts:  11345
+Errors:              0
+Duration:            300.029 s
+Throughput (RPS):    37.8131
+Avg Response Time:   52.5505 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 30.1821 %
+Disk Utilization (sdb, sdb2): 97.4187 %
+Starting 'create' load test with 4 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      18055
+Successful Inserts:  18055
+Errors:              0
+Duration:            300.055 s
+Throughput (RPS):    60.1723
+Avg Response Time:   65.9624 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 51.5759 %
+Disk Utilization (sdb, sdb2): 97.6327 %
+Starting 'create' load test with 8 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      24729
+Successful Inserts:  24729
+Errors:              0
+Duration:            300.099 s
+Throughput (RPS):    82.4029
+Avg Response Time:   96.5627 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 74.7078 %
+Disk Utilization (sdb, sdb2): 83.098 %
+Starting 'create' load test with 16 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      24733
+Successful Inserts:  24733
+Errors:              0
+Duration:            300.177 s
+Throughput (RPS):    82.3946
+Avg Response Time:   193.621 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 74.7792 %
+Disk Utilization (sdb, sdb2): 82.6858 %
+Starting 'create' load test with 24 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      24883
+Successful Inserts:  24883
+Errors:              0
+Duration:            300.233 s
+Throughput (RPS):    82.879
+Avg Response Time:   288.964 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 75.0987 %
+Disk Utilization (sdb, sdb2): 83.254 %
+Starting 'create' load test with 32 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      24777
+Successful Inserts:  24777
+Errors:              0
+Duration:            300.356 s
+Throughput (RPS):    82.4922
+Avg Response Time:   387.151 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 74.678 %
+Disk Utilization (sdb, sdb2): 83.9658 %
+Starting 'create' load test with 40 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      24804
+Successful Inserts:  24804
+Errors:              0
+Duration:            300.438 s
+Throughput (RPS):    82.5594
+Avg Response Time:   483.588 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 74.7963 %
+Disk Utilization (sdb, sdb2): 83.2224 %
+Starting 'create' load test with 50 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      24564
+Successful Inserts:  24564
+Errors:              0
+Duration:            300.511 s
+Throughput (RPS):    81.7408
+Avg Response Time:   610.654 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 74.6191 %
+Disk Utilization (sdb, sdb2): 83.1518 %
+Starting 'create' load test with 64 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      24772
+Successful Inserts:  24772
+Errors:              0
+Duration:            300.76 s
+Throughput (RPS):    82.3648
+Avg Response Time:   775.584 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 74.6448 %
+Disk Utilization (sdb, sdb2): 83.3928 %
+

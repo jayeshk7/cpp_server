@@ -1,0 +1,117 @@
+Starting load test with 1 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      1007141
+Successful:          1007141
+Errors:              0
+Duration:            300 s
+Throughput (RPS):    3357.13
+Avg Response Time:   4.07093e-05 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 31.0813 %
+Disk Utilization (sdb, sdb2): 0.689333 %
+Starting load test with 2 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      1846799
+Successful:          1846799
+Errors:              0
+Duration:            300 s
+Throughput (RPS):    6155.99
+Avg Response Time:   5.30648e-05 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 54.587 %
+Disk Utilization (sdb, sdb2): 0.582666 %
+Starting load test with 3 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      2122604
+Successful:          2122604
+Errors:              0
+Duration:            300 s
+Throughput (RPS):    7075.34
+Avg Response Time:   0.0072788 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 66.1869 %
+Disk Utilization (sdb, sdb2): 0.773332 %
+Starting load test with 4 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      2597234
+Successful:          2597234
+Errors:              0
+Duration:            300 s
+Throughput (RPS):    8657.44
+Avg Response Time:   0.0134108 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 80.48 %
+Disk Utilization (sdb, sdb2): 0.599999 %
+Starting load test with 5 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      3061359
+Successful:          3061359
+Errors:              0
+Duration:            300.001 s
+Throughput (RPS):    10204.5
+Avg Response Time:   0.015579 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 90.803 %
+Disk Utilization (sdb, sdb2): 0.741332 %
+Starting load test with 6 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      3137114
+Successful:          3137114
+Errors:              0
+Duration:            300 s
+Throughput (RPS):    10457
+Avg Response Time:   0.032337 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 92.2346 %
+Disk Utilization (sdb, sdb2): 1.356 %
+Starting load test with 7 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      3154731
+Successful:          3154731
+Errors:              0
+Duration:            300.807 s
+Throughput (RPS):    10487.6
+Avg Response Time:   0.115548 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 91.9416 %
+Disk Utilization (sdb, sdb2): 0.748653 %
+Starting load test with 8 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      3142696
+Successful:          3142696
+Errors:              0
+Duration:            300.682 s
+Throughput (RPS):    10451.9
+Avg Response Time:   0.187231 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 91.884 %
+Disk Utilization (sdb, sdb2): 3.60247 %
+Starting load test with 9 concurrent users for 300 seconds...
+
+--- Test Finished ---
+Total Requests:      3170034
+Successful:          3170034
+Errors:              0
+Duration:            300.908 s
+Throughput (RPS):    10534.9
+Avg Response Time:   0.273273 ms
+
+--- Resource Usage ---
+CPU Utilization (Cores 6,7): 91.8718 %
+Disk Utilization (sdb, sdb2): 1.52605 %

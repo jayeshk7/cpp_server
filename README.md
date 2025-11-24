@@ -1,5 +1,7 @@
 ## (toy 🧸) CPP server
 
+A simple HTTP server in c++ for no other use than my learning. 
+
 ### Installation steps for Ubuntu
 
 You will require Postgres and libpq. To install these, do:
@@ -13,12 +15,14 @@ I am using [cpp-httplib](https://github.com/yhirose/cpp-httplib) and as mentione
 To compile the server, do:
 `$ make server`
 If this fails, it can happen if the directory where the Postgres headers and libpq are installed in your machine are different. In that case, get the output of these commands:
+
 ```
 $ pg_config --includedir
 Sample output ----> /usr/include/postgresql
 $ pg_config --libdir
 Sample output ----> /usr/lib/x86_64-linux-gnu
 ```
+
 Assuming your output is same as the sample outputs shown above, you then substitute the path in `CPPFLAGS+=-I/<path> .... ` in the Makefile with `/usr/include/postgresql`. 
 And the path in `CPPFLAGS+= ... -L/<path> ...` in the Makefile with `/usr/lib/x86_64-linux-gnu`. Now run `make server` again.
 
